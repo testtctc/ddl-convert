@@ -29,7 +29,7 @@ import logging
 from sqlparse.sql import TokenList
 from sqlparse.tokens import Punctuation
 
-TYPES = {
+HIVE_TYPE_MAPS = {
     'DECIMAL': 'DECIMAL',
     'FLOAT': 'FLOAT',
     'TINYINT': 'TINYINT',
@@ -55,7 +55,9 @@ TYPES = {
     'JSON': 'STRING'
 }
 
-COLDEF= re.compile("""(`?\w+`?)\s+(\w+).*?(comment\s+(?P<quote>['"])(.*?)(?P=quote))?\s*,?$""",re.IGNORECASE)
+COLDEF= re.compile("""`?(\w+)`?\s+(\w+).*?(comment\s+(?P<quote>['"])(.*?)(?P=quote))?\s*,?$""",re.IGNORECASE)
+CREATE_TABLE=re.compile(r"create\s+table\s+(\w+\.)?(\w+)",re.IGNORECASE)
+
 
 class ColumnsExtract():
 
@@ -64,19 +66,29 @@ class ColumnsExtract():
         sql:建表语句
         """
         assert re.match('create\s+table', sql.strip(), flags=re.IGNORECASE)
-        self.sql = sql
+
+        self.table_name=None
+
+        self.sql = sql.strip()
         # 列
         self.columnames = []
+        self.coltypes={}
+        self.comments={}
         # 定义
         self.definitions = {}
+        #是否完成解析
+        self.parsed=False
 
     def parse(self):
         parsed = sqlparse.parse(self.sql)[0]
 
         # extract the parenthesis which holds column definitions
+        self.table_name=CREATE_TABLE.match(self.sql).group(2)
         pos, par = parsed.token_next_by(i=sqlparse.sql.Parenthesis)
+
         self.extract_definitions(par)
         print(self.definitions)
+        self.parsed=True
 
     def extract_definitions(self, token_list: TokenList):
         # assumes that token_list is a parenthesis
@@ -86,16 +98,21 @@ class ColumnsExtract():
         par_level = 0
         start = 1
         flatened = [t for t in token_list.flatten()]
+        new_token_list=TokenList(flatened)
         end = len(flatened)
         while True:
-            pos, _ = token_list.token_next_by(m=(Punctuation, ','), idx=start)
+            pos, _ = new_token_list.token_next_by(m=(Punctuation, ','), idx=start)
+
+            #控制位移
+
             if pos:
                 statement = flatened[start:pos]
-                start = pos
+                start = pos+1
             else:
                 statement = flatened[pos:end]
+
             statement=''.join(str(i) for i in statement).strip()
-            print(statement)
+            #print(statement)
             res=COLDEF.match(statement)
             if res:
                 colname=res.group(1)
@@ -104,46 +121,25 @@ class ColumnsExtract():
 
                 self.columnames.append(colname)
                 self.definitions[colname]=statement
+                self.coltypes[colname]=coltype
+                self.comments[colname]=colcomment
+
             else:
                 #无法匹配时，则直接放弃
                 break
 
-        # for token in token_list.flatten():
-        #     if token.is_whitespace:
-        #         continue
-        #     elif token.match(sqlparse.tokens.Punctuation, '('):
-        #         par_level += 1
-        #         continue
-        #     if token.match(sqlparse.tokens.Punctuation, ')'):
-        #         if par_level == 0:
-        #             break
-        #         else:
-        #             par_level -= 1
-        #     elif token.match(sqlparse.tokens.Punctuation, ','):
-        #         if tmp:
-        #             definitions.append(tmp)
-        #         tmp = []
-        #     else:
-        #         tmp.append(token)
-        # if tmp:
-        #     definitions.append(tmp)
-        # return definitions
-
-    @property
     def formatted_columns(self, quoted_by='`', seperated_by=','):
-        cols = ['`{}`'.format(c) for c in self.columnames]
+        cols = ['{}{}{}'.format(quoted_by,c,quoted_by) for c in self.columnames]
         return seperated_by.join(cols)
 
 
-if __name__ == '__main__':
-    SQL = """CREATE TABLE foo (
-             id integer primary key comment '主键',
-             title varchar(200) not null,
-             description text,
-             `salary` FLOAT,
-             key(title,description)
-             );"""
+    def to_hive_ddl(self):
+        if not self.parsed:
+            raise ValueError('please parse the ddl')
 
-    parser = ColumnsExtract(SQL)
-    parser.parse()
-    print(parser.formatted_columns)
+        template = "create table {table}(\n{columns}\n);"
+        columns=[  "{} {} comment  '{}' ".format(c,HIVE_TYPE_MAPS[self.coltypes[c]],self.comments[c]) for c in self.columnames]
+        columns= ',\n'.join(columns)
+        res = template.format(table=self.table_name,columns=columns)
+        return res
+9
