@@ -7,7 +7,7 @@ from flask_cors import cross_origin
 import base64
 from ddl.parse import ColumnsExtract
 
-app = Flask(__name__)
+app = Flask(__name__,template_folder='webddl/build',static_folder='webddl/build/static')
 app.config["COMPRESS_MIMETYPES"] =['application/json','application/javascript','text/css']
 
 from flask_compress import Compress
@@ -21,13 +21,13 @@ compress.init_app(app)
 def provide_data():
     return json.dumps({"url":"www.baidu.com","name":"tc","email":"tangcheng2014@163.com"})
 
-@app.route("/")
-def sv():
-    return render_template('index.html')
-
 @app.route("/health")
 def health():
     return "ok"
+
+@app.route("/index")
+def index():
+    return render_template('index.html')
 
 
 @app.route("/hive_ddl",methods=['POST'])
