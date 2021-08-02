@@ -24,7 +24,6 @@
 
 import sqlparse
 import re
-import logging
 
 from sqlparse.sql import TokenList
 from sqlparse.tokens import Punctuation

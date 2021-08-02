@@ -2,9 +2,8 @@
 
 #coding=utf-8
 import json
-from flask import render_template, Flask, Response,request
+from flask import render_template, Flask,request
 from flask_cors import cross_origin
-import base64
 from ddl.parse import ColumnsExtract
 
 app = Flask(__name__,template_folder='webddl/build',static_folder='webddl/build/static')
@@ -16,17 +15,14 @@ compress = Compress()
 
 compress.init_app(app)
 
-
-@app.route("/data")
-def provide_data():
-    return json.dumps({"url":"www.baidu.com","name":"tc","email":"tangcheng2014@163.com"})
-
 @app.route("/health")
 def health():
+    """检查健康"""
     return "ok"
 
 @app.route("/index")
 def index():
+    """启动页面"""
     return render_template('index.html')
 
 

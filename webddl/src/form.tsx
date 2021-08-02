@@ -59,6 +59,10 @@ export default class MysqlForm extends React.Component<{}, NameFormState> {
         return (
             <form onSubmit={this.handleSubmit}>
                 <label>
+                    <div>
+                        <input type="submit" value="转成hive dll" />
+                    </div>
+                    <br/>
                     <label className='col_label' >mysql ddl</label>
                     <label>
                         <textarea className='code_form' value={this.state.mysql_dll} onChange={this.handle_mysql_Change} />
@@ -67,7 +71,7 @@ export default class MysqlForm extends React.Component<{}, NameFormState> {
                     <label>
                         <textarea className='columns' value={this.state.cols_list} />
                     </label>
-                    <br/>
+                    <br />
                     <label className='col_label' >hive ddl</label>
                     <label>
                         <textarea className='code_form' value={this.state.hive_ddl} />
@@ -76,8 +80,6 @@ export default class MysqlForm extends React.Component<{}, NameFormState> {
                     <label>
                         <textarea className='columns' value={this.state.cols_str} />
                     </label>
-                    <br />
-                    <input type="submit" value="转成hive dll" />
                 </label>
             </form>
         );
