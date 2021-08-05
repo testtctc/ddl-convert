@@ -54,6 +54,34 @@ HIVE_TYPE_MAPS = {
     'JSON': 'STRING'
 }
 
+
+
+FLINK_TYPE_MAPS = {
+    'DECIMAL': 'DECIMAL',
+    'FLOAT': 'FLOAT',
+    'TINYINT': 'TINYINT',
+    'INT': 'INT',
+    'INTEGER': 'INT',
+    'SMALLINT': 'SMALLINT',
+    'DOUBLE': 'DOUBLE',
+    'TIMESTAMP': 'TIMESTAMP',
+    'DATE': 'DATE',
+    'YEAR': 'INT',
+    'DATETIME': 'STRING',
+    'TIME': 'TIME',
+    'CHAR': 'CHAR',
+    'VARCHAR': 'VARCHAR',
+    'TEXT': 'STRING',
+    'TINYTEXT': 'STRING',
+    'MEDIUMTEXT': 'STRING',
+    'LONGTEXT': 'STRING',
+    'BLOB': 'BYTES',
+    'TINYBLOB': 'BYTES',
+    'MEDIUMBLOB': 'BYTES',
+    'LONGBLOB': 'BYTES',
+    'JSON': 'STRING'
+}
+
 COLDEF= re.compile("""`?(\w+)`?\s+(\w+).*?(comment\s+(?P<quote>['"])(.*?)(?P=quote))?\s*,?$""",re.IGNORECASE)
 CREATE_TABLE=re.compile(r"create\s+table\s+(\w+\.)?(\w+)",re.IGNORECASE)
 
@@ -136,8 +164,18 @@ class ColumnsExtract():
         if not self.parsed:
             raise ValueError('please parse the ddl')
 
-        template = "create table {table}(\n{columns}\n);"
+        template = "create table {table}(\n{columns}\n) \ncomment '' \npartitioned by ( logregion string,logdate string) \nstored as parquet;"
         columns=[  "{} {} comment  '{}' ".format(c,HIVE_TYPE_MAPS[self.coltypes[c]],self.comments[c]) for c in self.columnames]
+        columns= ',\n'.join(columns)
+        res = template.format(table=self.table_name,columns=columns)
+        return res
+
+    def to_flink_ddl(self):
+        if not self.parsed:
+            raise ValueError('please parse the ddl')
+
+        template = "create table {table}(\n{columns}\n) \ncomment '' \nwith ( connector='print' ) ;"
+        columns=[  "{} {} comment  '{}' ".format(c,FLINK_TYPE_MAPS[self.coltypes[c]],self.comments[c]) for c in self.columnames]
         columns= ',\n'.join(columns)
         res = template.format(table=self.table_name,columns=columns)
         return res

@@ -5,13 +5,13 @@ body {
 
 .col_label{
   display: inline-block;
-  width: 100px;
+  width: 120px;
 }
 
 .code_form {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',monospace;
-  width: 300px;
-  height: 400px;
+  width: 500px;
+  height: 300px;
   border: 2px solid rgb(12, 1, 1); 
   vertical-align:middle;
 }

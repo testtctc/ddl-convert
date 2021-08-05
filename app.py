@@ -40,7 +40,10 @@ def hive_ddl():
     out['cols_str']=parser.formatted_columns('"', ',\n')
     out['hive_ddl'] = parser.to_hive_ddl()
     out['mysql_ddl']=sql
+    out['flink_ddl']=parser.to_flink_ddl()
     return json.dumps(out)
+
+
 
 
 if __name__ == '__main__':

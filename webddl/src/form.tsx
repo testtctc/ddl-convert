@@ -7,7 +7,8 @@ type NameFormState = {
     mysql_dll: string,
     cols_list: string,
     cols_str: string
-    hive_ddl: string
+    hive_ddl: string,
+    flink_ddl:string
 }
 
 
@@ -18,7 +19,8 @@ export default class MysqlForm extends React.Component<{}, NameFormState> {
             mysql_dll: '',
             cols_list: '',
             cols_str: '',
-            hive_ddl: ''
+            hive_ddl: '',
+            flink_ddl:''
         };
 
 
@@ -60,7 +62,7 @@ export default class MysqlForm extends React.Component<{}, NameFormState> {
             <form onSubmit={this.handleSubmit}>
                 <label>
                     <div>
-                        <input type="submit" value="转成hive dll" />
+                        <input type="submit" value="转换 dll" />
                     </div>
                     <br/>
                     <label className='col_label' >mysql ddl</label>
@@ -79,6 +81,11 @@ export default class MysqlForm extends React.Component<{}, NameFormState> {
                     <label className='col_label'>columns string</label>
                     <label>
                         <textarea className='columns' value={this.state.cols_str} />
+                    </label>
+                    <br />
+                    <label className='col_label' >flink ddl</label>
+                    <label>
+                        <textarea className='code_form' value={this.state.flink_ddl} />
                     </label>
                 </label>
             </form>
