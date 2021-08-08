@@ -2,7 +2,6 @@ import { timeStamp } from 'console';
 import React, { useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import './index.css'
 
 type DateRange={
     start_date:string,
@@ -58,21 +57,32 @@ export default class DorisDates extends React.Component<{},DateRange> {
         + '-' + ('0' + Date.getDate()).slice(-2)
     return DS
 }
-  start_date_onChange=(value:Date)=>{
+
+
+  start_date_onChange=(value: Date)=>{
     this.setState( this.state && {'start_date':this.DateToYYYYMMDD_HHMM(value)}  )
   };
+
   end_date_onChange=(value:Date)=>{
     this.setState( this.state && {'end_date':this.DateToYYYYMMDD_HHMM(value)})
   }
+
+  dates_change=(value:Array<Date>)=>{
+    let dates={
+      'end_date':this.DateToYYYYMMDD_HHMM(value[1]),
+      'start_date':this.DateToYYYYMMDD_HHMM(value[0]),
+    }
+
+    this.setState( this.state && dates)
+  }
+
 
   render() {
     return (
       <div>
         <p className='calendar'>
-        <label>开始日期</label>
-        <Calendar onChange={this.start_date_onChange} />
-        <label>结束日期</label>
-        <Calendar  onChange={this.end_date_onChange}/>
+        <label>选择日期</label>
+        <Calendar onChange={this.dates_change} selectRange={true}  />
         </p>
         <label>
           <form onSubmit={this.handleSubmit}>

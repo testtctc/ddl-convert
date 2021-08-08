@@ -7,7 +7,6 @@ from flask_cors import cross_origin
 from ddl.parse import ColumnsExtract
 from ddl.utils import generate_date_range
 
-
 app = Flask(__name__,template_folder='webddl/build',static_folder='webddl/build/static')
 app.config["COMPRESS_MIMETYPES"] =['application/json','application/javascript','text/css']
 
@@ -60,8 +59,6 @@ def generate_dates():
         "partitions":dates
     }
     return json.dumps(out)
-
-
 
 
 if __name__ == '__main__':
