@@ -27,5 +27,6 @@ def test_parse():
     print(parser.coltypes)
     print(parser.formatted_columns())
     print(parser.formatted_columns('"',',\n'))
-    ddl = parser.to_hive_ddl()
-    print(ddl)
+    ddl1 = parser.to_hive_ddl()
+    ddl2=parser.to_doris_ddl()
+    print(ddl2)

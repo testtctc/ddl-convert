@@ -27,6 +27,8 @@ import re
 
 from sqlparse.sql import TokenList
 from sqlparse.tokens import Punctuation
+from ddl.utils import generate_date_range
+import datetime
 
 HIVE_TYPE_MAPS = {
     'DECIMAL': 'DECIMAL',
@@ -80,6 +82,33 @@ FLINK_TYPE_MAPS = {
     'MEDIUMBLOB': 'BYTES',
     'LONGBLOB': 'BYTES',
     'JSON': 'STRING'
+}
+
+# doris 类型
+DORIS_TYPE_MAP = {
+    'DECIMAL': 'DECIMAL',
+    'FLOAT': 'FLOAT',
+    'TINYINT': 'TINYINT',
+    'INT': 'INT',
+    'INTEGER': 'INT',
+    'SMALLINT': 'SMALLINT',
+    'DOUBLE': 'DOUBLE',
+    'TIMESTAMP': 'DATETIME',
+    'DATE': 'DATE',
+    'YEAR': 'INT',
+    'DATETIME': 'VARCHAR',
+    'TIME': 'VARCHAR',
+    'CHAR': 'CHAR',
+    'VARCHAR': 'VARCHAR',
+    'TEXT': 'VARCHAR',
+    'TINYTEXT': 'VARCHAR',
+    'MEDIUMTEXT': 'VARCHAR',
+    'LONGTEXT': 'VARCHAR',
+    'BLOB': 'VARCHAR',
+    'TINYBLOB': 'VARCHAR',
+    'MEDIUMBLOB': 'VARCHAR',
+    'LONGBLOB': 'VARCHAR',
+    'JSON': 'VARCHAR'
 }
 
 COLDEF= re.compile("""`?(\w+)`?\s+(\w+).*?(comment\s+(?P<quote>['"])(.*?)(?P=quote))?\s*,?$""",re.IGNORECASE)
@@ -174,9 +203,35 @@ class ColumnsExtract():
         if not self.parsed:
             raise ValueError('please parse the ddl')
 
-        template = "create table {table}(\n{columns}\n) \ncomment '' \nwith ( connector='print' ) ;"
+        template = "create table {table}(\n{columns}\n) \ncomment '' \nwith ( connector='print' );"
+
         columns=[  "{} {} comment  '{}' ".format(c,FLINK_TYPE_MAPS[self.coltypes[c]],self.comments[c]) for c in self.columnames]
         columns= ',\n'.join(columns)
         res = template.format(table=self.table_name,columns=columns)
         return res
-9
+
+    def to_doris_ddl(self):
+        if not self.parsed:
+            raise ValueError('please parse the ddl')
+
+        template = "create table {table}(\n{columns}\n)\n engine=olap\nAGGREGATE KEY(``)\ncomment ''"
+        columns=[  "{} {} comment  '{}' ".format(c,DORIS_TYPE_MAP[self.coltypes[c]],self.comments[c]) for c in self.columnames]
+        columns= ',\n'.join(columns)
+        now = datetime.datetime.now()
+        thirdty_days_ago=now-datetime.timedelta(30)
+        properties="""
+DISTRIBUTED BY HASH(``) BUCKETS 10
+PROPERTIES (
+"replication_num" = "3",
+"in_memory" = "false",
+"storage_format" = "V2",
+"dynamic_partition.enable" = "true",
+"dynamic_partition.time_unit" = "DAY",
+"dynamic_partition.time_zone" = "Asia/Shanghai",
+"dynamic_partition.start" = "-2147483648",
+"dynamic_partition.end" = "1",
+"dynamic_partition.buckets" = "10",
+"dynamic_partition.prefix" = "p"
+);""".strip()
+        res = template.format(table=self.table_name,columns=columns)  + '\nPARTITION BY RANGE(logdate)\n' + generate_date_range(thirdty_days_ago,now) +  '\n' + properties
+        return res
