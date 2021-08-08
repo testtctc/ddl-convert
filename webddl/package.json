@@ -9,9 +9,13 @@
     "@types/jest": "^26.0.24",
     "@types/node": "^12.20.17",
     "@types/react": "^17.0.15",
+    "@types/react-calendar": "^3.4.2",
     "@types/react-dom": "^17.0.9",
+    "rc-calendar": "^9.15.11",
     "react": "^17.0.2",
+    "react-calendar": "^3.4.0",
     "react-dom": "^17.0.2",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "typescript": "^4.3.5",
     "web-vitals": "^1.1.2"
@@ -39,5 +43,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react-router-dom": "^5.1.8"
   }
 }

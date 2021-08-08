@@ -5,6 +5,8 @@ import json
 from flask import render_template, Flask,request
 from flask_cors import cross_origin
 from ddl.parse import ColumnsExtract
+from ddl.utils import generate_date_range
+
 
 app = Flask(__name__,template_folder='webddl/build',static_folder='webddl/build/static')
 app.config["COMPRESS_MIMETYPES"] =['application/json','application/javascript','text/css']
@@ -41,7 +43,24 @@ def hive_ddl():
     out['hive_ddl'] = parser.to_hive_ddl()
     out['mysql_ddl']=sql
     out['flink_ddl']=parser.to_flink_ddl()
+    out['doris_ddl'] = parser.to_doris_ddl()
     return json.dumps(out)
+
+@app.route("/dates",methods=['POST'])
+@cross_origin()
+def generate_dates():
+    d = json.loads(request.data)
+    print(d)
+    start = d['start_date']
+    end=d['end_date']
+    dates = generate_date_range(start,end)
+    out={
+        "start_date":start,
+        "end_date":end,
+        "partitions":dates
+    }
+    return json.dumps(out)
+
 
 
 

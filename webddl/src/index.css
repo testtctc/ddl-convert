@@ -24,3 +24,8 @@ body {
   border: 2px solid rgb(12, 1, 1);
   vertical-align:middle;
 }
+
+.calendar{
+  white-space:nowrap;
+  display:inline
+}
