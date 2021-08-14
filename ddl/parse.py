@@ -115,7 +115,8 @@ DORIS_TYPE_MAP = {
 }
 
 COLDEF= re.compile("""`?(\w+)`?\s+(\w+).*?(comment\s+(?P<quote>['"])(.*?)(?P=quote))?\s*,?$""",re.IGNORECASE)
-CREATE_TABLE=re.compile(r"create\s+table\s+(\w+\.)?(\w+)",re.IGNORECASE)
+
+CREATE_TABLE=re.compile(r"create\s+table\s+`?(\w+)?`?\.?`?(\w+)`?",re.IGNORECASE)
 
 
 class ColumnsExtract():
