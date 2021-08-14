@@ -53,7 +53,8 @@ HIVE_TYPE_MAPS = {
     'TINYBLOB': 'STRING',
     'MEDIUMBLOB': 'STRING',
     'LONGBLOB': 'STRING',
-    'JSON': 'STRING'
+    'JSON': 'STRING',
+    'BIGINT':'BIGINT'
 }
 
 
@@ -81,7 +82,8 @@ FLINK_TYPE_MAPS = {
     'TINYBLOB': 'BYTES',
     'MEDIUMBLOB': 'BYTES',
     'LONGBLOB': 'BYTES',
-    'JSON': 'STRING'
+    'JSON': 'STRING',
+    'BIGINT':'BIGINT'
 }
 
 # doris 类型
@@ -108,7 +110,8 @@ DORIS_TYPE_MAP = {
     'TINYBLOB': 'VARCHAR',
     'MEDIUMBLOB': 'VARCHAR',
     'LONGBLOB': 'VARCHAR',
-    'JSON': 'VARCHAR'
+    'JSON': 'VARCHAR',
+    'BIGINT':'BIGINT'
 }
 
 COLDEF= re.compile("""`?(\w+)`?\s+(\w+).*?(comment\s+(?P<quote>['"])(.*?)(?P=quote))?\s*,?$""",re.IGNORECASE)
@@ -126,6 +129,8 @@ class ColumnsExtract():
         self.table_name=None
 
         self.sql = sql.strip()
+        if not self.sql.endswith(';'):
+            self.sql= self.sql + ';'
         # 列
         self.columnames = []
         self.coltypes={}
