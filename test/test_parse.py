@@ -11,7 +11,7 @@ def test_re():
 
 def test_parse():
     SQL = """
-    CREATE TABLE foo (
+    CREATE TABLE `hello`.`foo_1_0` (
              id integer primary key comment '主键',
              title varchar(200) not null,
              `description` text,

@@ -116,7 +116,7 @@ DORIS_TYPE_MAP = {
 
 COLDEF= re.compile("""`?(\w+)`?\s+(\w+).*?(comment\s+(?P<quote>['"])(.*?)(?P=quote))?\s*,?$""",re.IGNORECASE)
 
-CREATE_TABLE=re.compile(r"create\s+table\s+`?([\w\d]+)?`?\.?`?([\d\w]+)`?",re.IGNORECASE)
+CREATE_TABLE=re.compile(r"create\s+table\s+([\w\d.`]+)",re.IGNORECASE)
 
 class ColumnsExtract():
 
@@ -144,7 +144,7 @@ class ColumnsExtract():
         parsed = sqlparse.parse(self.sql)[0]
 
         # extract the parenthesis which holds column definitions
-        self.table_name=CREATE_TABLE.match(self.sql).group(2)
+        self.table_name=CREATE_TABLE.match(self.sql).group(1)
         pos, par = parsed.token_next_by(i=sqlparse.sql.Parenthesis)
 
         self.extract_definitions(par)

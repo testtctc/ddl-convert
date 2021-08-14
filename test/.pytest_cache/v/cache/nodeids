@@ -1,3 +1,4 @@
 [
+  "test_parse.py::test_re",
   "test_parse.py::test_parse"
 ]
