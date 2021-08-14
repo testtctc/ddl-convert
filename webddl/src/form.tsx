@@ -85,10 +85,12 @@ export default class MysqlForm extends React.Component<{}, NameFormState> {
                         <textarea className='columns' value={this.state.cols_str} />
                     </label>
                     <br/>
+                    <br/>
                     <label className='col_label' >flink ddl</label>
                     <label>
                         <textarea className='code_form' value={this.state.flink_ddl} />
                     </label>
+                    <br/>
                     <br/>
                     <label className='col_label' >doris ddl</label>
                     <label>
