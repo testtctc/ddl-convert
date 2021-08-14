@@ -181,7 +181,7 @@ class ColumnsExtract():
                 colcomment=res.group(5)  if res.group(5) else ''
 
                 if coltype not in HIVE_TYPE_MAPS:
-                    continue
+                    break
 
                 self.columnames.append(colname)
                 self.definitions[colname]=statement
