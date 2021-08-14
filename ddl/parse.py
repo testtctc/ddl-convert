@@ -114,7 +114,7 @@ DORIS_TYPE_MAP = {
     'BIGINT':'BIGINT'
 }
 
-COLDEF= re.compile("""`?(\w+)`?\s+(\w+).*?(comment\s+(?P<quote>['"])(.*?)(?P=quote))?\s*,?$""",re.IGNORECASE|re.DOTALL)
+COLDEF= re.compile("""`?(\w+)`?\s+(\w+).*?(comment\s+(?P<quote>['"])(.*?)(?P=quote))?\s*,?$""",re.IGNORECASE)
 
 CREATE_TABLE=re.compile(r"create\s+table\s+`?(\w+)?`?\.?`?(\w+)`?",re.IGNORECASE)
 
@@ -128,7 +128,7 @@ class ColumnsExtract():
 
         self.table_name=None
 
-        self.sql = sql.strip()
+        self.sql = sql.strip().replace('\n','  ')
         if not self.sql.endswith(';'):
             self.sql= self.sql + ';'
         # 列
