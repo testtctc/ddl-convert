@@ -6,6 +6,8 @@ from flask import render_template, Flask,request
 from flask_cors import cross_origin
 from ddl.parse import ColumnsExtract
 from ddl.utils import generate_date_range
+from ddl.json import parse_json_keys
+
 
 app = Flask(__name__,template_folder='webddl/build',static_folder='webddl/build/static')
 app.config["COMPRESS_MIMETYPES"] =['application/json','application/javascript','text/css']
@@ -57,6 +59,21 @@ def generate_dates():
         "start_date":start,
         "end_date":end,
         "partitions":dates
+    }
+    return json.dumps(out)
+
+
+@app.route("/parse_json_keys",methods=['POST'])
+@cross_origin()
+def generate_json_keys():
+    d = json.loads(request.data)
+    assert d is not None
+    print(d)
+    jsondata = json.loads(d['data'])
+    keys = ',\n'.join(parse_json_keys(jsondata))
+    out={
+        "data":d['data'],
+        "keys":keys
     }
     return json.dumps(out)
 

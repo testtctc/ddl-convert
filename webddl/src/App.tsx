@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import MysqlForm from './form'
 import DorisDates from './dorisdates'
-
+import ExtractJsonKeys from './jsonkeys'
 
 import {
   BrowserRouter as Router,
@@ -28,10 +28,16 @@ function App() {
             <li>
               <Link to="/dorisdates">DorisDates</Link>
             </li>
+            <li>
+              <Link to="/jsonkeys">ExtractJsonKeys</Link>
+            </li>
           </ul>
         </nav>
 
         <Switch>
+          <Route path="/jsonkeys">
+            <ExtractJsonKeys />
+          </Route>
           <Route path="/mysqlform">
             <From />
           </Route>
@@ -64,5 +70,9 @@ function From() {
       <MysqlForm/>
     </div> );
 }
+ 
+
+
+
 
 export default App;

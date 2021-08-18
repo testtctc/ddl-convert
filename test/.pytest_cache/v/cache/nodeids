@@ -1,4 +1,3 @@
 [
-  "test_parse.py::test_re",
-  "test_parse.py::test_parse"
+  "test_json.py::test_parse_json_keys"
 ]

@@ -13,5 +13,6 @@ python app.py
 
 ### 编译前端
 cd webddl && npm run build
+
 ### 后端测试
 pytest
