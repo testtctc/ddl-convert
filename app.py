@@ -6,7 +6,7 @@ from flask import render_template, Flask,request
 from flask_cors import cross_origin
 from ddl.parse import ColumnsExtract
 from ddl.utils import generate_date_range
-from ddl.json import parse_json_keys
+from ddl.json import parse_json_keys,parse_json_tuple
 
 
 app = Flask(__name__,template_folder='webddl/build',static_folder='webddl/build/static')
@@ -69,12 +69,26 @@ def generate_json_keys():
     d = json.loads(request.data)
     assert d is not None
     print(d)
-    jsondata = json.loads(d['data'])
-    keys = ',\n'.join(parse_json_keys(jsondata))
-    out={
-        "data":d['data'],
-        "keys":keys
-    }
+    try:
+        jsondata = json.loads(d['data'])
+        get_json_object = ',\n'.join(parse_json_keys(jsondata))
+        r= parse_json_tuple(jsondata)[::-1]
+        json_tuple = '\n'.join(r)
+        out = {
+            "data": d['data'],
+            "get_json_object": get_json_object,
+            "json_tuple": json_tuple,
+            "error": "",
+            "code": 200
+        }
+    except Exception as e:
+        out = {
+            "data": d['data'],
+            "get_json_object": '',
+            "json_tuple": '',
+            "error":str(e),
+            "code":300
+        }
     return json.dumps(out)
 
 

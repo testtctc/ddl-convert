@@ -1,17 +1,21 @@
 # encoding=utf-8
 
-from ddl.json import parse_json_keys
-
+from ddl.json import parse_json_keys,parse_json_tuple
 def test_parse_json_keys():
-
     d={
         "a":3,
         "c":{
-           "d":5
-        }
+           "e":5,
+            "k":[3]
+        },
+        "d":"hello"
     }
 
     result = parse_json_keys(d)
-    assert len(result)==2
     print('============================')
     print(',\n'.join(result))
+
+    result2= parse_json_tuple(d)
+    print('\n'.join(result2))
+
+

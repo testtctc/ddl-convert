@@ -4,7 +4,10 @@ import './index';
 
 type JsonKeys={
     data:string,
-    keys?:string,
+    get_json_object?:string,
+    json_tuple?:string,
+    code?:200,
+    error:string
 }
 
 export default class ExtractJsonKeys extends React.Component<{},JsonKeys> {
@@ -13,7 +16,11 @@ export default class ExtractJsonKeys extends React.Component<{},JsonKeys> {
     super(props);
     this.state = {
         data:'',
-        keys:''
+        get_json_object:'',
+        json_tuple:'',
+        code:200,
+        error:''
+
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.data_change = this.data_change.bind(this);
@@ -36,7 +43,9 @@ export default class ExtractJsonKeys extends React.Component<{},JsonKeys> {
           () => {
               if (xhr.readyState == 4 && xhr.status == 200) {
                   var data: JsonKeys = JSON.parse(xhr.responseText) as JsonKeys
-                  console.log(data)
+                  if (data.code != 200){
+                    window.alert(data.error)
+                  }
                   this.setState(data)
               }
           }
@@ -54,20 +63,21 @@ data_change(event:any){
   render() {
     return (
       <div>
-        <label>
-            <form onSubmit={this.handleSubmit}>
-            <h3>json</h3>
-            <textarea className='code_form'  value={this.state.data} onChange={this.data_change}>
-            </textarea>
-            <br/>
-            <div>
-                <input type="submit" value="提交" />
-            </div>
-          </form>
-          <pre>
-            {this.state.keys}
-          </pre>
-        </label>
+          <form onSubmit={this.handleSubmit}>
+          <h3>json</h3>
+          <textarea className='code_form'  value={this.state.data} onChange={this.data_change}>
+          </textarea>
+          <br/>
+          <div>
+              <input type="submit" value="提交" />
+          </div>
+        </form>
+        <h2>get_json_object</h2>
+        <textarea className='code_form' value={this.state.get_json_object} >
+        </textarea>
+        <h2>json_tuple</h2>
+        <textarea className='code_form' value={this.state.json_tuple}  >
+        </textarea>
       </div>
     );
   }
