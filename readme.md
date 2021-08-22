@@ -6,7 +6,7 @@ python flask + react + typescript
 ## features
 - support auto convert mysql ddl to hive/flink/doris ddl
 - support auto fill doris date range
-- suport auto parse json stirng  and parse it to  table fields
+- suport auto parse json stirng  and convert it to  table fields
 
 ## run the project
 ### debug
