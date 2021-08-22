@@ -128,7 +128,7 @@ class ColumnsExtract():
 
         self.table_name=None
 
-        self.sql = sql.strip().replace('\n','  ')
+        self.sql = sql.strip().replace('\n',' ')
         if not self.sql.endswith(';'):
             self.sql= self.sql + ';'
         # 列
@@ -141,10 +141,14 @@ class ColumnsExtract():
         self.parsed=False
 
     def parse(self):
-        parsed = sqlparse.parse(self.sql)[0]
+        self.table_name = CREATE_TABLE.match(self.sql).group(1)
+        sql=CREATE_TABLE.sub('CREATE TABLE {}'.format(self.table_name),self.sql)
+
+        parsed = sqlparse.parse(sql)[0]
 
         # extract the parenthesis which holds column definitions
         self.table_name=CREATE_TABLE.match(self.sql).group(1)
+
         pos, par = parsed.token_next_by(i=sqlparse.sql.Parenthesis)
 
         self.extract_definitions(par)
