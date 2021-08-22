@@ -3,7 +3,7 @@ import  pandas  as pd
 import datetime
 
 def generate_date_range(statdate,enddate):
-    """产生doris时间范围"""
+    """generate doris date range"""
     dates = pd.date_range(statdate,enddate)
     templates='partition p{partition} Values[("{start}"),("{end}"))'
     out=[]
