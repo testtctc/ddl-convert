@@ -106,3 +106,15 @@ class JsonToHiveDdl():
         ddl += self.json_field_to_string(key, val) + '\n'
         ddl += ')'
         return ddl
+
+class JsonCommentToHiveDdl():
+    """json comment to  hive ddl"""
+
+    def __init__(self,jsondata):
+        assert isinstance(jsondata,dict)
+        self.jsondata=jsondata
+
+    def to_hive_ddl(self):
+        ddl = "CREATE TABLE `<table_name>` (\n{}\n)\ncomment '' \npartitoned by(logregion string,logdate string)\nstored as parquet"
+        body  = ["{} string  comment '{}'".format(key,self.jsondata[key]) for key  in self.jsondata]
+        return ddl.format(',\n'.join(body))

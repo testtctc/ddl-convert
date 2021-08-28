@@ -6,6 +6,7 @@ type JsonKeys={
     data:string,
     get_json_object?:string,
     json_tuple?:string,
+    from_json?:string,
     code?:200,
     error:string
 }
@@ -18,6 +19,7 @@ export default class ExtractJsonKeys extends React.Component<{},JsonKeys> {
         data:'',
         get_json_object:'',
         json_tuple:'',
+        from_json:"",
         code:200,
         error:''
 
@@ -78,9 +80,10 @@ data_change(event:any){
         <h2>json_tuple</h2>
         <textarea className='code_form' value={this.state.json_tuple}  >
         </textarea>
+        <h2>from_json</h2>
+        <textarea className='code_form' value={this.state.from_json}  >
+        </textarea>
       </div>
     );
   }
-
-    
 };

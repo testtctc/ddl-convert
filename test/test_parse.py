@@ -1,7 +1,7 @@
 # encoding=utf-8
 import re
 
-from ddl.json_to_ddl import JsonToHiveDdl
+from ddl.json_to_ddl import JsonToHiveDdl, JsonCommentToHiveDdl
 from ddl.parse import ColumnsExtract
 
 COLDEF= re.compile("""(`?\w+`?)\s+(\w+).*?(comment\s+(?P<quote>['"])(.*?)(?P=quote))?\s*,?$""",re.IGNORECASE)
@@ -45,3 +45,13 @@ def test_json_to_ddl():
     parser = JsonToHiveDdl(d)
     res = parser.to_hive_ddl()
     print(res)
+
+
+def test_json_comment_to_hive_ddl():
+    d={
+        "a":"字段啊",
+        "b": "需求啊"
+    }
+    parser = JsonCommentToHiveDdl(d)
+    print('================test_json_comment_to_hive_ddl==========================')
+    print(parser.to_hive_ddl())

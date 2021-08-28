@@ -47,17 +47,11 @@ def parse_json_tuple(data:dict,start=ROOT,function=FUNCTION,variable = VARIABLE)
     return result
 
 
-
-
-
-def parse_from_json(raw:str):
+def parse_from_json(raw):
     """ a utility for spark function from_json"""
-    try:
-        j = json.loads(raw)
-        return _parse_json(j)
-    except Exception as e:
-        print(e)
-        return ""
+
+    assert (isinstance(raw,dict) or isinstance(raw,list))
+    return _parse_json(raw)
 
 def _parse_json(o):
     if isinstance(o, dict):
@@ -79,9 +73,3 @@ def _parse_json(o):
             return "array<string>"
     else:
         return "string"
-
-
-
-
-
-

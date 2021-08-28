@@ -1,3 +1,6 @@
 [
-  "test_parse.py::test_json_to_ddl"
+  "test_parse.py::test_re",
+  "test_parse.py::test_parse",
+  "test_parse.py::test_json_to_ddl",
+  "test_parse.py::test_json_comment_to_hive_ddl"
 ]
