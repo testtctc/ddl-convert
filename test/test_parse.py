@@ -49,8 +49,8 @@ def test_json_to_ddl():
 
 def test_json_comment_to_hive_ddl():
     d={
-        "a":"字段啊",
-        "b": "需求啊"
+        "a":"comment a ",
+        "b": "comment b"
     }
     parser = JsonCommentToHiveDdl(d)
     print('================test_json_comment_to_hive_ddl==========================')

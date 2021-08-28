@@ -4,6 +4,8 @@
 import json
 from flask import render_template, Flask,request
 from flask_cors import cross_origin
+
+from ddl.json_to_ddl import JsonCommentToHiveDdl, JsonToHiveDdl
 from ddl.parse import ColumnsExtract
 from ddl.utils import generate_date_range
 from ddl.json import parse_json_keys, parse_json_tuple, parse_from_json
@@ -92,6 +94,58 @@ def generate_json_keys():
             "from_json":'',
             "error":str(e),
             "code":300
+        }
+    return json.dumps(out)
+
+@app.route("/jsoncommnet2ddl",methods=['POST'])
+@cross_origin()
+def jsoncommnet2ddl():
+    d = json.loads(request.data)
+    assert d is not None
+    print(d)
+    print('================test_json_comment_to_hive_ddl==========================')
+    try:
+        jsondata = json.loads(d['data'])
+        parser = JsonCommentToHiveDdl(jsondata)
+        hiveddl  = parser.to_hive_ddl()
+        out = {
+            "code": 200,
+            "error": "",
+             "hiveddl":hiveddl
+        }
+    except Exception as e:
+        traceback.print_exc()
+        out = {
+            "hiveddl": "",
+            "error":str(e),
+            "code":300
+        }
+    print(out)
+    return json.dumps(out)
+
+@app.route("/json2ddl",methods=['POST'])
+@cross_origin()
+def json2ddl():
+    d = json.loads(request.data)
+    assert d is not None
+    print(d)
+
+    print('================test_json_comment_to_hive_ddl==========================')
+    try:
+        jsondata = json.loads(d['data'])
+        parser = JsonToHiveDdl(jsondata)
+        hiveddl = parser.to_hive_ddl()
+        out = {
+            "code": 200,
+            "error": "",
+            "hiveddl": hiveddl
+        }
+    except Exception as e:
+        traceback.print_exc()
+        out = {
+            "hiveddl": "",
+            "error": str(e),
+            "code": 300
         }
     return json.dumps(out)
 

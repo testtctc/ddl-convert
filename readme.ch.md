@@ -1,5 +1,8 @@
 # 数仓开发便利工具
 
+## 简介
+数仓开发小工具，减少重复的的复制粘贴
+
 ## 技术
 python flask + react + typescript
 

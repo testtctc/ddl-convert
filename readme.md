@@ -1,12 +1,17 @@
 # facilities for data warehouse development
 
+
+## introduction
+To make life easier and less hard coding, I develop this project to help those sql boys/girls
 ## component
 python flask + react + typescript
 
 ## features
 - support auto convert mysql ddl to hive/flink/doris ddl
 - support auto fill doris date range
-- suport auto parse json stirng  and convert it to  table fields
+- support auto parse json stirng  and convert it to  table fields
+- support auto parse json stirng  and convert it to  from_json argument
+- support auto parse json stirng  and convert it to  hive ddl
 
 ## run the project
 ### debug

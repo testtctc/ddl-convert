@@ -4,7 +4,6 @@
 DEFAULT_TYPE = 'string'
 class JsonToHiveDdl():
     """json to  hive ddl"""
-
     def __init__(self,jsondata):
         assert isinstance(jsondata,dict)
         self.jsondata=jsondata
@@ -29,7 +28,7 @@ class JsonToHiveDdl():
         if isinstance(val, dict):
             string = keystring + self.json_value_to_struct(val)
         elif isinstance(val, list):
-            string = keystring + 'array<' + self.get_list_type(val) + '>'
+            string = keystring +self.get_list_type(val)
         elif isinstance(val,int):
             string = keystring + "int"
         elif isinstance(val,float):
@@ -85,10 +84,11 @@ class JsonToHiveDdl():
         return string
 
     def json_field_to_string(self,key, value):
+        """parse fields"""
         if isinstance(value, dict):
             return '`{}` {}'.format(key, self.json_value_to_struct(value))
         elif isinstance(value, list):
-            return '`{}` '.format(key) + 'array<' + self.get_list_type(value) + '>'.format(key)
+            return '`{}` '.format(key) + self.get_list_type(value)
         elif isinstance(value,int):
             return '`{}` {}'.format(key,'int')
         elif isinstance(value,float):

@@ -11,6 +11,8 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import ParserJsonComment from './json_comment_2_dll';
+import ParserJson from './json_2_hiveddl';
 
 
 function App() {
@@ -31,12 +33,24 @@ function App() {
             <li>
               <Link to="/jsonkeys">ExtractJsonKeys</Link>
             </li>
+            <li>
+              <Link to="/jsocommet">JsonCommet2HiveDdl</Link>
+            </li>
+            <li>
+              <Link to="/json">Json2HiveDdl</Link>
+            </li>
           </ul>
         </nav>
 
         <Switch>
           <Route path="/jsonkeys">
             <ExtractJsonKeys />
+          </Route>
+          <Route path="/json">
+            <ParserJson />
+          </Route>
+          <Route path="/jsocommet">
+            <ParserJsonComment />
           </Route>
           <Route path="/mysqlform">
             <From />
@@ -70,9 +84,6 @@ function From() {
       <MysqlForm/>
     </div> );
 }
- 
-
-
 
 
 export default App;
