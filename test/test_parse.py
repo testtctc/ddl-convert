@@ -1,5 +1,7 @@
 # encoding=utf-8
 import re
+
+from ddl.json_to_ddl import JsonToHiveDdl
 from ddl.parse import ColumnsExtract
 
 COLDEF= re.compile("""(`?\w+`?)\s+(\w+).*?(comment\s+(?P<quote>['"])(.*?)(?P=quote))?\s*,?$""",re.IGNORECASE)
@@ -30,3 +32,16 @@ def test_parse():
     ddl1 = parser.to_hive_ddl()
     ddl2=parser.to_doris_ddl()
     print(ddl2)
+
+def test_json_to_ddl():
+    d={
+        "a":3,
+        "c":{
+           "e":5,
+            "k":[3]
+        },
+        "d":"hello"
+    }
+    parser = JsonToHiveDdl(d)
+    res = parser.to_hive_ddl()
+    print(res)
