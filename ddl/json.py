@@ -4,7 +4,6 @@ ROOT='$.'
 FUNCTION='get_json_object'
 VARIABLE='log'
 LEVEL=0
-import json
 
 def parse_json_keys(data:dict,start=ROOT,function=FUNCTION,variable = VARIABLE):
     """a utility for hive function get_json_object """
@@ -19,6 +18,7 @@ def parse_json_keys(data:dict,start=ROOT,function=FUNCTION,variable = VARIABLE):
 def parse_json_tuple(data:dict,start=ROOT,function=FUNCTION,variable = VARIABLE):
     """ a utility for hive function lateral view  json_tuple """
     global LEVEL
+
     result=[]
     flat_keys=[]
     local_level=LEVEL
