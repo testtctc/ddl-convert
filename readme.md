@@ -12,6 +12,8 @@ python flask + react + typescript
 - support auto parse json stirng  and convert it to  table fields
 - support auto parse json stirng  and convert it to  from_json argument
 - support auto parse json stirng  and convert it to  hive ddl
+- support json format
+- list common paramters in hive/flink/spark
 
 ## run the project
 ### debug
