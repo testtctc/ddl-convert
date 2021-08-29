@@ -29,3 +29,14 @@ body {
   white-space:nowrap;
   display:inline
 }
+
+
+nav ul{
+  list-style: none;
+  display: inline;
+}
+
+nav li{
+  padding-right: 50px;
+  display: inline-block;
+}

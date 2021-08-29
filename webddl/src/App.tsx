@@ -13,6 +13,8 @@ import {
 } from "react-router-dom";
 import ParserJsonComment from './json_comment_2_dll';
 import ParserJson from './json_2_hiveddl';
+import FormatJson from './format_json';
+import { Showparamters } from './paramters';
 
 
 function App() {
@@ -39,12 +41,24 @@ function App() {
             <li>
               <Link to="/json">Json2HiveDdl</Link>
             </li>
+            <li>
+              <Link to="/formatjson">FormatJson</Link>
+            </li>
+            <li>
+              <Link to="/paramters">Showparamters</Link>
+            </li>
           </ul>
         </nav>
 
         <Switch>
           <Route path="/jsonkeys">
             <ExtractJsonKeys />
+          </Route>
+          <Route path="/paramters">
+            <Showparamters />
+          </Route>
+          <Route path="/formatjson">
+            <FormatJson/>
           </Route>
           <Route path="/json">
             <ParserJson />
