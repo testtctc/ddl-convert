@@ -73,6 +73,8 @@ def generate_json_keys():
     print(d)
     try:
         jsondata = json.loads(d['data'])
+        if isinstance(jsondata,str):
+            jsondata  = json.loads(jsondata)
         get_json_object = ',\n'.join(parse_json_keys(jsondata))
         r= parse_json_tuple(jsondata)[::-1]
         json_tuple = '\n'.join(r)
