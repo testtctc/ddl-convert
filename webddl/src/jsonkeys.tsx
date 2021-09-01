@@ -16,7 +16,7 @@ export default class ExtractJsonKeys extends React.Component<{},JsonKeys> {
   constructor(props: any) {
     super(props);
     this.state = {
-        data:'',
+        data:'{ "bookname ":"VB BLACK BOOK", "price":500 }',
         get_json_object:'',
         json_tuple:'',
         from_json:"",

@@ -15,7 +15,7 @@ export default class ParserJson extends React.Component<{},JsonRaw> {
   constructor(props: any) {
     super(props);
     this.state = {
-        data:'',
+        data:'{ "bookname ":"VB BLACK BOOK", "price":500 }',
         hiveddl:"",
         code:200,
         error:''

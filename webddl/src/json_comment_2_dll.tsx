@@ -14,7 +14,7 @@ export default class ParserJsonComment extends React.Component<{},JsonComment> {
   constructor(props: any) {
     super(props);
     this.state = {
-        data:'',
+        data:'{ "bookname ":"VB BLACK BOOK", "price":"price" }',
         hiveddl:"",
         code:200,
         error:''

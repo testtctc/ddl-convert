@@ -17,7 +17,14 @@ export default class MysqlForm extends React.Component<{}, NameFormState> {
     constructor(props: any) {
         super(props);
         this.state = {
-            mysql_dll: '',
+            mysql_dll: `
+            CREATE TABLE hello.foo_1_0 (
+                id integer primary key comment '主键',
+                title varchar(200) not null,
+                description text,
+                salary FLOAT,
+                key(title,description)
+                );`,
             cols_list: '',
             cols_str: '',
             hive_ddl: '',

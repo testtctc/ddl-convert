@@ -11,7 +11,7 @@ export default class FormatJson extends React.Component<{},JsonRaw> {
   constructor(props: any) {
     super(props);
     this.state = {
-        data:'{"a":3}',
+        data:`{ "bookname ":"VB BLACK BOOK", "price":500 }`,
         alldata:"{}"   
     };
     this.handleSubmit = this.handleSubmit.bind(this);
